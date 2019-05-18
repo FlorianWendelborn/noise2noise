@@ -344,7 +344,7 @@ class Network:
 
                 out_split = []
                 for gpu in range(num_gpus):
-                    with tf.device("/gpu:%d" % gpu):
+                    with tf.device("/cpu:%d" % gpu):
                         net = self.clone() if assume_frozen else self
                         out_expr = net.get_output_for(*in_split[gpu], return_as_list=True, **dynamic_kwargs)
 

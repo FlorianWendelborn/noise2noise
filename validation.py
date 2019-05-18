@@ -80,7 +80,7 @@ def validate(submit_config: dnnlib.SubmitConfig, noise: dict, dataset: dict, net
 
     tfutil.init_tf(config.tf_config)
 
-    with tf.device("/gpu:0"):
+    with tf.device("/cpu:0"):
         net = util.load_snapshot(network_snapshot)
         validation_set.evaluate(net, 0, noise_augmenter.add_validation_noise_np)
     ctx.close()

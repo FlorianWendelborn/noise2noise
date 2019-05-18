@@ -78,7 +78,7 @@ def train(
     dataset_iter = create_dataset(train_tfrecords, minibatch_size, noise_augmenter.add_train_noise_tf)
 
     # Construct the network using the Network helper class and a function defined in config.net_config
-    with tf.device("/gpu:0"):
+    with tf.device("/cpu:0"):
         net = tflib.Network(**config.net_config)
 
     # Optionally print layer information
@@ -97,7 +97,7 @@ def train(
     opt = tflib.Optimizer(learning_rate=lrate_in, **config.optimizer_config)
 
     for gpu in range(submit_config.num_gpus):
-        with tf.device("/gpu:%d" % gpu):
+        with tf.device("/cpu:%d" % gpu):
             net_gpu = net if gpu == 0 else net.clone()
 
             denoised = net_gpu.get_output_for(noisy_input_split[gpu])
